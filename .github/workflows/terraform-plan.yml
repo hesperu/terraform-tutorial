@@ -33,6 +33,11 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_TF_PLAN_SA }}
+        
+      - name: Setup tfcmt
+        uses: shmokmt/actions-setup-tfcmt@v2
+        with:
+          version: v4.6.0
 
       - name: Terraform fmt (check)
         run: terraform fmt -check -recursive
@@ -48,8 +53,4 @@ jobs:
 
       # plan結果をPRにコメント（tfcmt）
       - name: Comment plan to PR
-        uses: suzuki-shunsuke/tfcmt@v4
-        with:
-          github_token: ${{ github.token }}
-          command: plan
-          args: terraform show -no-color tfplan
+        run: tfcmt plan -patch -- terraform plan -input=false
