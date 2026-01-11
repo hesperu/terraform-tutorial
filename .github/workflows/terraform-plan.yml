@@ -15,6 +15,9 @@ concurrency:
   group: tf-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  TF_VAR_project_id: ${{ vars.TF_VAR_project_id }}
+
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -49,8 +52,8 @@ jobs:
         run: terraform validate
 
       - name: Terraform plan
-        run: terraform plan -input=false -no-color -out=tfplan
+        run: terraform plan -input=false -no-color -out=tfplan -var="project_id=${{ vars.GCP_PROJECT_ID }}"
 
       # plan結果をPRにコメント（tfcmt）
       - name: Comment plan to PR
-        run: tfcmt plan -patch -- terraform plan -input=false
+        run: tfcmt plan -patch -- terraform plan -input=false -var="project_id=${{ vars.GCP_PROJECT_ID }}"
