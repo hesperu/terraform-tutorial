@@ -56,4 +56,8 @@ jobs:
 
       # plan結果をPRにコメント（tfcmt）
       - name: Comment plan to PR
-        run: tfcmt plan -patch -- terraform plan -input=false
+        uses: suzuki-shunsuke/tfcmt@v4
+        with:
+          github_token: ${{ github.token }}
+          command: plan
+          args: terraform show -no-color tfplan
