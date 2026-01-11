@@ -52,8 +52,8 @@ jobs:
         run: terraform validate
 
       - name: Terraform plan
-        run: terraform plan -input=false -no-color -out=tfplan -var="project_id=${{ vars.GCP_PROJECT_ID }}"
+        run: terraform plan -input=false -no-color -out=tfplan
 
       # plan結果をPRにコメント（tfcmt）
       - name: Comment plan to PR
-        run: tfcmt plan -patch -- terraform plan -input=false -var="project_id=${{ vars.GCP_PROJECT_ID }}"
+        run: tfcmt plan -patch -- terraform plan -input=false
